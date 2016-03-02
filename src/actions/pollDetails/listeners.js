@@ -4,7 +4,7 @@ import { addNotification } from '../notify/actions';
 
 export function registerListeners(params) {
   return (dispatch, getState) => {
-    const { firebase, auth } = getState();
+    const { firebase } = getState();
     const ref = firebase.child(`polls/${params.idPoll}`);
     ref.on('value', snapshot => {
       const newPoll = snapshot.val();
