@@ -16,8 +16,9 @@ export function setPolls(polls) {
 export function addPoll(title) {
   return (dispatch, getState) => {
     const { firebase, auth } = getState();
+    const createdAt = Firebase.ServerValue.TIMESTAMP;
     const newPollRef = firebase.child('polls')
-      .push({ title, createdAt: Firebase.ServerValue.TIMESTAMP }, error => {
+      .push({ title, createdAt }, error => {
         if (error) {
           console.error('ERROR @ addPoll :', error); // eslint-disable-line no-console
           dispatch({
@@ -27,7 +28,7 @@ export function addPoll(title) {
       } else {
         const pollId = newPollRef.key();
         const userId = auth.id;
-        firebase.child(`myPolls/${userId}/${pollId}`).set({ state: 'locked', createdAt: Firebase.ServerValue.TIMESTAMP });
+        firebase.child(`myPolls/${userId}/${pollId}`).set({ state: 'locked', createdAt });
       }
     });
   };

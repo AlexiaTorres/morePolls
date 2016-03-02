@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
+import { formatDate } from '../utils/formatDate';
 
 export default class PollItem extends Component {
 
@@ -21,9 +22,14 @@ export default class PollItem extends Component {
       <li className="list-group-item action-element" >
           <div className="row">
             <div className="col-lg-12">
-              <Link to={`/poll/${poll.id}`} style={{color: 'inherit', textDecoration: 'inherit'}}>{poll.title}
-                <span style={{'marginLeft': '20px'}} className={'glyphicon glyphicon-wrench action-icon'}/>
-              </Link>
+              <Link to={`/poll/${poll.id}`} style={{color: 'inherit', textDecoration: 'inherit'}}>
+              {poll.title}
+              {
+                poll.id === '-K4mB9gnUjzxp2mxShwk' || poll.id === '-K4mB6io8er7LNHtRRLZ' ? null
+                :
+              <span style={{marginLeft: '1em'}}>{formatDate(poll.createdAt)}</span>
+              }
+              <span style={{'marginLeft': '20px'}} className={'glyphicon glyphicon-wrench action-icon'}/></Link>
               <span onClick={(e) => this.handleRemoveButtonClick(e)} className="pull-right glyphicon glyphicon-trash action-icon"/>
               <img onClick={(e) => this.handleSetNextStateClick(e)} src={`img/${poll.state}.png`} style={{ paddingRight: 10}} className="pull-right action-icon" />
           </div>

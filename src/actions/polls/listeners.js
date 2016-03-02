@@ -9,7 +9,7 @@ export function registerListeners() {
 
     ref.on('value', myPollsSnapshot => {
       const promises = Object.keys(myPollsSnapshot.val() || []).map( pollId => new Promise(
-        resolve => firebase.child(`polls/${pollId}`).once('value', snapshot => resolve({ id: pollId, title: snapshot.val().title, state: myPollsSnapshot.val()[pollId].state } ))
+        resolve => firebase.child(`polls/${pollId}`).once('value', snapshot => resolve({ id: pollId, title: snapshot.val().title, createdAt:snapshot.val().createdAt } ))
       ));
 
       Promise.all(promises).then(function(polls) {
