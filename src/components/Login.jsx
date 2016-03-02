@@ -13,8 +13,15 @@ export default class Login extends Component {
      logIn(userName, pass);
   }
 
+  handleError(){
+    setTimeout( () => {
+      this.props.registerError();
+    }, 1000);
+  }
+
 
   render() {
+    const { error } = this.props;
     return (
       <div style={{textAlign: 'center', margin:'2em auto 2em', justifyContent: 'center'}}>
         <h2>Welcome to Poll App</h2>
@@ -28,6 +35,12 @@ export default class Login extends Component {
             <div className="form-group">
               <label>Password</label>
               <input ref="pass" type="password" className="form-control" placeholder="Password" />
+               {(error) ?
+               (<div className="alert animated fadeInRight" style={{ opacity: 0.9}}>
+                   <div className="alert alert-danger" role="alert">{error}</div>
+               </div>)
+               : null }
+                {(error) ? this.handleError() : null }
             </div>
             <button type="submit" className="btn btn-primary" onClick={ (e) => {e.preventDefault(); this.handleSubmit();} }>Log in</button>
           </form>
@@ -38,5 +51,7 @@ export default class Login extends Component {
 }
 
 Login.propTypes = {
-  logIn: PropTypes.func.isRequired
+  logIn: PropTypes.func.isRequired,
+  registerError: PropTypes.func.isRequired,
+  error: PropTypes.string.isRequired
 };

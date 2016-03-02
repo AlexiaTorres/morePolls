@@ -1,5 +1,5 @@
 import { pushState } from 'redux-router';
-import { INIT_AUTH, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS } from './action-types.js';
+import { ALERT, INIT_AUTH, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, USER_EXISTS, WRONG_PASSWORD } from './action-types.js';
 import { tokens } from '../../utils/tokens';
 import * as settingsActions from '../settings';
 import FirebaseTokenGenerator from "firebase-token-generator";
@@ -26,7 +26,10 @@ export function createUser(user, password){
       const ref = firebase.child(`users/${user}`);
     ref.once('value', snap => {
       if (snap.exists()){
-        console.log('User exists');
+        dispatch({
+          type: USER_EXISTS,
+          payload: "This user already exists",
+      });
       } else {
         ref.set({ user, password});
         dispatch(logIn(user, password));
@@ -58,7 +61,10 @@ export function logIn(user, password){
            }
          });
       } else {
-        console.log('authentification error');
+        dispatch({
+          type: WRONG_PASSWORD,
+          payload: "Wrong username or password",
+        });
       }
     });
   };
@@ -107,5 +113,13 @@ export function signOut() {
 export function cancelSignIn() {
   return dispatch => {
     return dispatch(pushState(null, '/'));
+  };
+}
+
+export function registerError(){
+  return (dispatch) => {
+    dispatch({
+      type: ALERT
+    });
   };
 }

@@ -3,6 +3,6 @@ import Register from '../components/Register';
 import * as authActions from '../actions/auth';
 
 export default connect(
-  state => state.auth,
+state => ({auth: state.auth, userExistsError: state.registerAlert}),
   authActions
 )(Register);

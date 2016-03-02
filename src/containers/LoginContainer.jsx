@@ -3,6 +3,6 @@ import Login from '../components/Login';
 import * as authActions from '../actions/auth';
 
 export default connect(
-  state => state.auth,
+state => ({auth: state.auth, error: state.loginAlert}),
   authActions
 )(Login);
