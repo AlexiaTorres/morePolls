@@ -17,7 +17,6 @@ export default class PollItem extends Component {
   }
 
   render() {
-    debugger;
     const { poll } = this.props;
     return (
       <li className="list-group-item action-element" >
