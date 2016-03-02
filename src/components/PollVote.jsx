@@ -46,8 +46,7 @@ export default class PollVote extends Component {
   }
 
   render() {
-    const { poll } = this.props;
-    const entries = poll.entries || {};
+    const { poll, auth } = this.props;    const entries = poll.entries || {};
     const total = this.totalVotes(entries);
     const contents = this.state.loading ? <Spinner /> : <div>
         <div className="panel-heading">
@@ -64,7 +63,7 @@ export default class PollVote extends Component {
                   Object.keys(entries).map( (id, index) =>
                     <li className="list-group-item" key={index}>
                       { entries[id].title }
-                      { poll.state === 'unlocked' ? <span onClick={ () => this.handleVoteClick(poll.id, id) } className="action-element glyphicon glyphicon-arrow-up"/> : null }
+                      { auth.authenticated && poll.state === 'unlocked' ? <span onClick={ () => this.handleVoteClick(poll.id, id) } className="action-element glyphicon glyphicon-arrow-up"/> : null }
                       <br/>
                       { this.createProgressBar(entries[id], total, index) }
                     </li>
@@ -82,6 +81,7 @@ export default class PollVote extends Component {
 }
 
 PollVote.propTypes = {
+  auth: PropTypes.object.isRequired,
   poll: PropTypes.object.isRequired,
   voteEntry: PropTypes.func.isRequired,
   params: PropTypes.object.isRequired,
