@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-
 import Notifications from '../components/Notifications';
+import * as notificationsActions from '../actions/notify';
 
 function mapStateToProps(state) {
   return {
@@ -9,12 +9,7 @@ function mapStateToProps(state) {
   };
 }
 
-function mapActionsToProps() {
-  return {
-  };
-}
-
 export default connect(
   mapStateToProps,
-  mapActionsToProps
+  notificationsActions
 )(Notifications);

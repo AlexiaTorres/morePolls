@@ -4,7 +4,7 @@ import { addNotification } from '../notify/actions';
 
 export function registerListeners(params) {
   return (dispatch, getState) => {
-    const { firebase } = getState();
+    const { firebase, auth } = getState();
     const ref = firebase.child(`polls/${params.idPoll}`);
     ref.on('value', snapshot => {
       const newPoll = snapshot.val();
@@ -19,13 +19,11 @@ export function registerListeners(params) {
 
     ref.child('entries').orderByChild('createdAt').startAt(Date.now()).on('child_added', snapshot => {
       const newEntry = snapshot.val();
-      dispatch(addNotification(`Added new entry, "${newEntry.title}", to the poll "${params.idPoll}"`));
-    });
+      addNotification(`Added new entry, "${newEntry.title}", to the poll "${params.idPoll}"`, snapshot.val().createdAt)(dispatch, getState);    });
 
     ref.child('entries').on('child_removed', snapshot => {
       const entry = snapshot.val();
-      dispatch(addNotification(`Entry removed: "${entry.title}"`));
-    });
+      addNotification(`Entry removed: "${entry.title}"`, snapshot.val().createdAt)(dispatch, getState);    });
 
      ref.child('entries').on('child_changed', () => {
       dispatch(addNotification(`New vote in to the poll "${params.idPoll}"`));

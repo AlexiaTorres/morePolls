@@ -21,13 +21,13 @@ export function registerListeners() {
 
     });
 
-    ref.orderByChild('createdAt').startAt(Date.now()).on('child_added', () => {
-      dispatch(addNotification('Added a new poll'));
-    });
+    ref.orderByChild('createdAt').startAt(Date.now()).on('child_added', snapshot => {
+      addNotification('Added a new poll', snapshot.val().createdAt)(dispatch, getState);
+   });
 
-    ref.on('child_removed', () => {
-      dispatch(addNotification('Poll removed'));
-    });
+    ref.on('child_removed', snapshot => {
+      addNotification('Poll removed', snapshot.val().createdAt)(dispatch, getState);
+     });
 
   };
 }

@@ -7,7 +7,6 @@ import {
 } from './action-types';
 
 import { createActionConfirmation } from '../confirm';
-import Firebase from 'firebase';
 
 export function setPolls(polls) {
   return { type: SET_POLLS, polls };
@@ -16,7 +15,7 @@ export function setPolls(polls) {
 export function addPoll(title) {
   return (dispatch, getState) => {
     const { firebase, auth } = getState();
-    const createdAt = Firebase.ServerValue.TIMESTAMP;
+    const createdAt = Date.now();
     const newPollRef = firebase.child('polls')
       .push({ title, createdAt }, error => {
         if (error) {

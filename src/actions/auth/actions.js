@@ -86,7 +86,7 @@ export function authenticate(user) {
         firebase.child(`notifications/${auth.id}`).once('value', snapshot => {
           dispatch({
             type: SET_NOTIFICATIONS,
-            notifications: snapshot.val() || []
+            notifications: snapshot.val() !== null ? snapshot.val() : []
           });
         });
     });

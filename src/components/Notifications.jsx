@@ -7,6 +7,14 @@ export default class Notifications extends Component {
     super(props);
   }
 
+  componentWillMount() {
+    this.props.registerListeners();
+  }
+
+  componentWillReceiveProps(){
+    this.props.registerListeners();
+  }
+
   render() {
     const { pending, total, active } = this.props;
     let className = 'badge';
@@ -25,6 +33,7 @@ Notifications.propTypes = {
   total: PropTypes.number,
   pending: PropTypes.number,
   active: PropTypes.string.isRequired,
+  registerListeners: PropTypes.func.isRequired
 };
 
 Notifications.defaultProps = {
