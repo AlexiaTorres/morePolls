@@ -27,6 +27,10 @@ export function registerListeners(params) {
       dispatch(addNotification(`Entry removed: "${entry.title}"`));
     });
 
+     ref.child('entries').on('child_changed', () => {
+      dispatch(addNotification(`New vote in to the poll "${params.idPoll}"`));
+    });
+
   };
 }
 
