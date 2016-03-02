@@ -2,6 +2,10 @@ import { pushState } from 'redux-router';
 import { INIT_AUTH, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS } from './action-types.js';
 import { tokens } from '../../utils/tokens';
 import * as settingsActions from '../settings';
+import FirebaseTokenGenerator from "firebase-token-generator";
+
+const appSecret = 'sRhN4rw1LfRCN8BXS5zCNpo3odJAWhTvLXXT8edk';
+const tokenGenerator = new FirebaseTokenGenerator(appSecret);
 
 function setUserSettings(firebase, dispatch, authData, nextActionType) {
   firebase.child(`users/${authData.uid}`).once('value', snapshot => {
@@ -14,6 +18,50 @@ function setUserSettings(firebase, dispatch, authData, nextActionType) {
     });
     dispatch(settingsActions.registerListeners());
   });
+}
+
+export function createUser(user, password){
+    return (dispatch, getState) => {
+      const { firebase } = getState();
+      const ref = firebase.child(`users/${user}`);
+    ref.once('value', snap => {
+      if (snap.exists()){
+        console.log('User exists');
+      } else {
+        ref.set({ user, password});
+        dispatch(logIn(user, password));
+       }
+     });
+  };
+}
+
+export function logIn(user, password){
+  return (dispatch, getState) => {
+    const { firebase } = getState();
+    const ref = firebase.child(`users/${user}`);
+    ref.once('value', snap => {
+      if (snap.exists()  &&   snap.val().password === password){
+        const token = tokenGenerator.createToken({ uid: user, provider: "custom" }, { expires: 9999999999999 });
+        firebase.authWithCustomToken(token, function(error, authData) {
+          if (error) {
+            console.log("Login Failed!", error);
+          } else {
+            console.log("Login Succeeded!", authData);
+            dispatch({
+              type: INIT_AUTH,
+              payload: firebase.getAuth(),
+              meta: {
+                timestamp: Date.now()
+              }
+            });
+            dispatch(pushState(null, '/poll'));
+           }
+         });
+      } else {
+        console.log('authentification error');
+      }
+    });
+  };
 }
 
 export function authenticate(user) {
