@@ -4,3 +4,4 @@ export const SIGN_OUT_SUCCESS = 'SIGN_OUT_SUCCESS';
 export const USER_EXISTS = 'USER_EXISTS';
 export const WRONG_PASSWORD = 'WRONG_PASSWORD';
 export const ALERT = 'ALERT';
+export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS';

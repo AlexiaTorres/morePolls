@@ -1,5 +1,5 @@
 import { pushState } from 'redux-router';
-import { ALERT, INIT_AUTH, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, USER_EXISTS, WRONG_PASSWORD } from './action-types.js';
+import { SET_NOTIFICATIONS, ALERT, INIT_AUTH, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, USER_EXISTS, WRONG_PASSWORD } from './action-types.js';
 import { tokens } from '../../utils/tokens';
 import * as settingsActions from '../settings';
 import FirebaseTokenGenerator from "firebase-token-generator";
@@ -72,7 +72,7 @@ export function logIn(user, password){
 
 export function authenticate(user) {
   return (dispatch, getState) => {
-    const { firebase } = getState();
+    const { firebase, auth } = getState();
 
     dispatch(pushState(null, '/'));
 
@@ -83,6 +83,12 @@ export function authenticate(user) {
       else {
         setUserSettings(firebase, dispatch, authData, SIGN_IN_SUCCESS);
       }
+        firebase.child(`notifications/${auth.id}`).once('value', snapshot => {
+          dispatch({
+            type: SET_NOTIFICATIONS,
+            notifications: snapshot.val() || []
+          });
+        });
     });
   };
 }
@@ -106,6 +112,10 @@ export function signOut() {
       type: SIGN_OUT_SUCCESS
     });
     dispatch(settingsActions.unregisterListeners());
+    dispatch({
+      type: SET_NOTIFICATIONS,
+      notifications: []
+    });
   };
 }
 
