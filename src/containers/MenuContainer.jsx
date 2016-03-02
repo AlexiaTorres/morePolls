@@ -25,7 +25,7 @@ class Menu extends Component {
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <Link className="navbar-brand" to="/">Poll App</Link>
+            { auth.authenticated ? <Link className="navbar-brand" to="/">Poll App ~ { auth.id} </Link> : <Link className="navbar-brand" to="/">Poll App</Link>}
           </div>
           <div id="navbar" className="navbar-collapse collapse">
             <ul className="nav navbar-nav">
