@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import MenuContainer from './MenuContainer';
 import ConfirmDialogContainer from './ConfirmDialogContainer';
 import { connect } from 'react-redux';
+import { registerListeners, unregisterListeners } from  '../actions/app/listeners';
 
 class App extends Component {
 
@@ -31,7 +32,15 @@ App.propTypes = {
   history: PropTypes.object.isRequired
 };
 
+function mapDispatchToProps(dispatch) {
+  return {
+    registerListeners: id => registerListeners(id, dispatch),
+    unregisterListeners: id => unregisterListeners(id, dispatch)
+  };
+}
+
 export default connect(
   state => ({
-    auth: state.auth
-  }))(App);
+    auth: state.auth, user: state.user
+  }),
+  mapDispatchToProps)(App);

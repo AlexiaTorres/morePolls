@@ -10,6 +10,7 @@ import SignInContainer from './containers/SignInContainer';
 import SettingsContainer from './containers/SettingsContainer';
 import RegisterContainer from './containers/RegisterContainer';
 import LoginContainer from './containers/LoginContainer';
+import PeopleContainer from './containers/PeopleContainer';
 
 export default () => (
   <Route path="/" component={App}>
@@ -22,6 +23,7 @@ export default () => (
     <Route path="settings" component={SettingsContainer} />
     <Route path="register" component={RegisterContainer} />
     <Route path="login" component={LoginContainer} />
+    <Route path="people" component={PeopleContainer} />
     <IndexRoute component={SelectPollContainer}/>
     <Redirect path="*" to="/vote" />
   </Route>
