@@ -10,22 +10,25 @@ export default class Settings extends Component {
     const { settings } = props;
     const name =  settings && settings.name;
     const picture =  settings && settings.picture;
-
-    this.state = { name, picture, editing: false };
+    const user = settings && settings.user;
+    const password = settings && settings.password;
+    this.state = { name, picture, user, password, editing: false };
   }
 
   componentWillReceiveProps(nextProps) {
     const { settings } = nextProps;
     const name =  settings && settings.name;
     const picture =  settings && settings.picture;
-
-    this.setState({ name: name, picture: picture });
+    const user = settings && settings.user;
+    const password = settings && settings.password;
+    this.setState({ name: name || user, picture: picture, password: password});
   }
 
   saveSettingsClick() {
-    const { name, picture } = this.refs;
+    const { name, picture, user, password } = this.refs;
     const settings = {
-      name: name.value
+      name: name.value || user.value,
+      password: password.value
     };
 
     if (picture.value) {
@@ -40,17 +43,19 @@ export default class Settings extends Component {
   }
 
   onChange() {
-    const { name, picture } = this.refs;
+    const { name, picture, user, password } = this.refs;
     this.setState({
-      name: name.value,
+      name: name.value || user.value,
       picture: picture.value,
+      password: password.value,
       editing: true
     });
   }
 
   render() {
-    const name = this.state.name;
+    const name = this.state.name || this.state.user;
     const picture = this.state.picture;
+    const password = this.state.password;
     const editing = this.state.editing;
     const { saving } = this.props;
 
@@ -68,6 +73,11 @@ export default class Settings extends Component {
             <div className="input-group">
               <span className="input-group-addon">Picture</span>
                 <input disabled={ saving } type="text" className="form-control" ref="picture" value={ picture } onChange={(e) => this.onChange(e)}/>
+            </div>
+             <br/>
+            <div className="input-group">
+              <span className="input-group-addon">Password</span>
+                <input disabled={ saving } type="password" className="form-control" ref="password" value={ password } onChange={(e) => this.onChange(e)}/>
             </div>
           </div>
           <div className="panel-footer">

@@ -7,11 +7,12 @@ import FirebaseTokenGenerator from "firebase-token-generator";
 const appSecret = 'sRhN4rw1LfRCN8BXS5zCNpo3odJAWhTvLXXT8edk';
 const tokenGenerator = new FirebaseTokenGenerator(appSecret);
 
-function setUserSettings(firebase, dispatch, authData, nextActionType) {
-  firebase.child(`users/${authData.uid}`).once('value', snapshot => {
+function setUserSettings(firebase, dispatch, params, nextActionType) {
+  //const userId = (params === 'authData') ? params.uid : params.id;
+  firebase.child(`users/${params.uid}`).once('value', snapshot => {
     dispatch({
       type: nextActionType,
-      payload: Object.assign({}, authData, {settings: snapshot.val()}),
+      payload: Object.assign({}, params, {settings: snapshot.val()}),
       meta: {
         timestamp: Date.now()
       }
