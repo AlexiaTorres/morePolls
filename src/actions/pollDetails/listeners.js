@@ -25,10 +25,6 @@ export function registerListeners(params) {
       const entry = snapshot.val();
       addNotification(`Entry removed: "${entry.title}"`, snapshot.val().createdAt)(dispatch, getState);    });
 
-     ref.child('entries').on('child_changed', () => {
-      dispatch(addNotification(`New vote in to the poll "${params.idPoll}"`));
-    });
-
   };
 }
 

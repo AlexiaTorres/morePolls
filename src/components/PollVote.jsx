@@ -12,7 +12,9 @@ export default class PollVote extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { loading: true };
+    this.state = {
+      loading: true,
+      unvote: false};
   }
 
   componentWillMount() {
@@ -29,6 +31,11 @@ export default class PollVote extends Component {
 
   handleVoteClick(idPoll, idEntry) {
     this.props.voteEntry(idPoll, idEntry);
+    this.setState({ unvote: true});
+  }
+
+  handleUnVoteClick(idPoll, idEntry) {
+    this.props.unvoteEntry(idPoll, idEntry);
   }
 
   totalVotes(entries) {
@@ -64,6 +71,11 @@ export default class PollVote extends Component {
                     <li className="list-group-item" key={index}>
                       { entries[id].title }
                       { auth.authenticated && poll.state === 'unlocked' ? <span onClick={ () => this.handleVoteClick(poll.id, id) } className="action-element glyphicon glyphicon-arrow-up"/> : null }
+                      {
+                       auth.authenticated && this.state.unvote ?
+                        <button className="btn btn-danger" type="button" onClick={ () => this.handleUnVoteClick(poll.id, id) }>Change vote</button>
+                        : null
+                      }
                       <br/>
                       { this.createProgressBar(entries[id], total, index) }
                     </li>
@@ -84,6 +96,7 @@ PollVote.propTypes = {
   auth: PropTypes.object.isRequired,
   poll: PropTypes.object.isRequired,
   voteEntry: PropTypes.func.isRequired,
+  unvoteEntry: PropTypes.func.isRequired,
   params: PropTypes.object.isRequired,
   registerListeners: PropTypes.func.isRequired,
   unregisterListeners: PropTypes.func.isRequired

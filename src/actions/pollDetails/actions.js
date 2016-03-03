@@ -97,3 +97,30 @@ export function voteEntry(idPoll, idEntry) {
     });
   };
 }
+
+export function unvoteEntry(idPoll, idEntry) {
+  return (dispatch, getState) => {
+    const { firebase, auth } = getState();
+    const userVotesRef = firebase.child(`userVotes/${auth.id}/${idPoll}`);
+    const entriVotesRef = firebase.child(`polls/${idPoll}/entries/${idEntry}/votes`);
+    userVotesRef.remove(error => {
+      if (error ) {
+        console.error('ERROR @ updatePoll :', error);
+        dispatch({
+          type: UPDATE_POLL_ERROR,
+          payload: error,
+        });
+      } else {
+        entriVotesRef.transaction((votes => (votes > 0) ? (votes - 1) : 0), error => {
+          if (error) {
+            console.error('ERROR @ updatePoll :', error);
+            dispatch({
+              type: UPDATE_POLL_ERROR,
+              payload: error,
+            });
+          }
+        });
+      }
+    });
+  };
+}
