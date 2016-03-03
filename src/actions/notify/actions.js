@@ -49,7 +49,8 @@ export function setNotificationAsReaded(index) {
 export function onRemoveNotificationClick(index) {
   return (dispatch, getState) => {
     const { firebase, auth } = getState();
-    firebase.child(`notifications/${auth.id}/`).transaction( notify => notify.filter( (notication, newIndex) => index !== newIndex ), error => {      console.error('ERROR @ removingNotification :', error);
+    firebase.child(`notifications/${auth.id}/`).transaction( notify => notify.filter( (notication, newIndex) => index !== newIndex ), error => {
+      console.error('ERROR @ removingNotification :', error);
       dispatch({
         type: REMOVE_NOTIFICATION
       });
@@ -60,11 +61,11 @@ export function onRemoveNotificationClick(index) {
 export function onRemoveAllNotificationsClick() {
   return (dispatch, getState) => {
     const { firebase, auth } = getState();
-    firebase.child(`notifications/${auth.id}/`).set([], error => {      console.error('ERROR @ removingNotification :', error);
+    firebase.child(`notifications/${auth.id}/`).set([], error => {
+      console.error('ERROR @ removingNotification :', error);
       dispatch({
         type: REMOVE_ALL_NOTIFICATIONS
       });
     });
   };
 }
-

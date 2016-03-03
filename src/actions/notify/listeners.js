@@ -1,8 +1,11 @@
 import { SET_NOTIFICATIONS } from './action-types';
 
+
 export function registerListeners() {
   return (dispatch, getState) => {
     const { firebase, auth } = getState();
+
+
     if (auth.authenticated) {
       const userId = auth.id;
       const ref = firebase.child(`notifications/${userId}`);
@@ -16,7 +19,9 @@ export function registerListeners() {
     } else {
       dispatch({
         type: SET_NOTIFICATIONS,
+        notifications: []
       });
     }
+
   };
 }

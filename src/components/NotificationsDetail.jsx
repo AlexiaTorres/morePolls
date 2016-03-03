@@ -31,8 +31,9 @@ export default class NotificationsDetail extends Component {
   }
 
   render() {
-    const { messages, onRemoveNotificationClick, setNotificationAsReaded } = this.props;    const { maxMessages } = this.state;
+    const { messages, onRemoveNotificationClick, setNotificationAsReaded } = this.props;
     const noMessages = messages.length === 0 ? <h3>No messages</h3> : null;
+    const { maxMessages } = this.state;
     const loadMore = maxMessages < messages.length ? <button style={{'margin-left': '10px'}} className="btn btn-default pull-right" onClick={ () => this.handleLoadMoreButtonClick() }>Load More</button> : null;
     const clean = messages.length > 0 ? <button className="btn btn-danger pull-right" onClick={ () => this.handleRemoveAllButtonClick() }>Clean</button> : null;
     return (
