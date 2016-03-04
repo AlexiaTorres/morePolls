@@ -1,5 +1,9 @@
-import { SET_PEOPLE_SEARCH, CLEAR_PEOPLE_SEARCH } from './action-types';
+import { SET_WATCHED_POLLS, SET_PEOPLE_SEARCH, CLEAR_PEOPLE_SEARCH } from './action-types';
 import { MIN_SEARCH_STRING_LENGTH } from './constants';
+
+export function setWatchedPolls(watchedPolls) {
+  return { type: SET_WATCHED_POLLS, watchedPolls };
+}
 
 export function peopleSearch(startAt) {
  return (dispatch, getState) => {

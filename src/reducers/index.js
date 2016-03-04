@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { routerStateReducer as router } from 'redux-router';
 import polls from './poll';
+import watchedPolls from './watchedPolls';
 import pollDetails from './pollDetails';
 import pollSearch from './pollSearch';
 import messages from './notify';
@@ -14,6 +15,7 @@ import registerAlert from './registerAlert';
 import people from './people';
 
 const pollApp = combineReducers({
+  watchedPolls,
   people,
   auth,
   settings,

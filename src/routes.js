@@ -11,6 +11,7 @@ import SettingsContainer from './containers/SettingsContainer';
 import RegisterContainer from './containers/RegisterContainer';
 import LoginContainer from './containers/LoginContainer';
 import PeopleContainer from './containers/PeopleContainer';
+import WatchedPollListContainer from './containers/WatchedPollListContainer';
 
 export default () => (
   <Route path="/" component={App}>
@@ -24,6 +25,7 @@ export default () => (
     <Route path="register" component={RegisterContainer} />
     <Route path="login" component={LoginContainer} />
     <Route path="people" component={PeopleContainer} />
+    <Route path="watchedPolls" component={WatchedPollListContainer} />
     <IndexRoute component={SelectPollContainer}/>
     <Redirect path="*" to="/vote" />
   </Route>

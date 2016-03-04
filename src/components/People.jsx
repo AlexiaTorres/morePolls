@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+//import { Link } from 'react-router';
 import Spinner from './Spinner';
 
 export default class People extends Component {
@@ -24,11 +24,15 @@ export default class People extends Component {
     this.props.peopleSearch(name);
   }
 
+  handleWatchUser(user){
+    const { registerListeners } = this.props;
+    registerListeners(user.id);
+  }
+
   render() {
     const { users } = this.props;
     const noResults = users.length === 0 ? 'No results' : null;
-    return (
-      <div className="row">
+    return ( <div className="row">
         <div className="col-md-6">
           <div className="input-group">
             <input type="text" className="form-control" placeholder="Search people" ref="name" onChange={e => this.handleOnChangename(e)}/>
@@ -40,7 +44,7 @@ export default class People extends Component {
           { this.state.loading ? <Spinner /> : (<div>
             <ul className="list-group">
               {
-                users.map( (user, index) =>  <li className="list-group-item" key={index}><Link to={`/poll/${user.name}`}>{user.name}</Link></li> )
+                users.map( (user, index) =>  <li className="list-group-item" key={index} onClick={() => this.handleWatchUser(user)}> {user.name}</li> )
               }
            </ul>
            <h4>{ noResults }</h4>
@@ -52,9 +56,13 @@ export default class People extends Component {
 }
 
 People.propTypes = {
+  watchedPolls: PropTypes.array,
   users: PropTypes.array,
   peopleSearch: PropTypes.func.isRequired,
-  clearPeopleSearch: PropTypes.func.isRequired
+  clearPeopleSearch: PropTypes.func.isRequired,
+  registerListeners: PropTypes.func.isRequired,
+  unregisterListeners: PropTypes.func.isRequired,
+  navigate: PropTypes.func
 };
 
 People.defaultProps = {
