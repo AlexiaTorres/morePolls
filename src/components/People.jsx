@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-//import { Link } from 'react-router';
+import { Link } from 'react-router';
 import Spinner from './Spinner';
-import FollowList from './FollowList';
 
 export default class People extends Component {
 
@@ -9,60 +8,42 @@ export default class People extends Component {
     super(props);
     this.state = { loading: false };
   }
-/*
+
   componentWillReceiveProps() {
     this.setState({ loading: false });
   }
 
   componentWillUnmount() {
-    this.props.clearWatchedPeople();
+    this.props.clearPeopleSearch();
   }
 
-  handleOnChangeTitle() {
-    const node = this.refs.title;
-    const title =  node.value;
+  handleOnChangename() {
+    const node = this.refs.name;
+    const name =  node.value;
     this.setState({ loading: true });
-    this.props.watchedPeople(title);
+    this.props.peopleSearch(name);
   }
 
   render() {
-    const { people } = this.props;
-    const noResults = people.length === 0 ? 'No results' : null;*/
-    componentWillMount(){
-    const { auth, registerListeners } = this.props;
-    debugger;
-    registerListeners(auth.name);
-  }
-
-  componentWillUnmount(){
-    const { auth, unregisterListeners } = this.props;
-    unregisterListeners(auth.name);
-  }
-
-  _handleSearchChange(){
-    const { searchPeople } = this.props;
-    const searchTerm = this.refs.search.getValue();
-    searchPeople(searchTerm);
-  }
-
-  render() {
-    const { followers, following, watchedPeople } = this.props;
-    return(
+    const { users } = this.props;
+    const noResults = users.length === 0 ? 'No results' : null;
+    return (
       <div className="row">
         <div className="col-md-6">
           <div className="input-group">
-            <input type="text" className="form-control" placeholder="Pull Title" ref="title" onChange={e => this.handleOnChangeTitle(e)}/>
+            <input type="text" className="form-control" placeholder="Search people" ref="name" onChange={e => this.handleOnChangename(e)}/>
             <span className="input-group-btn">
-              <button className="btn btn-info" type="button" onClick={e => this.handleOnChangeTitle(e)}><span className="glyphicon glyphicon-search" /></button>
+              <button className="btn btn-info" type="button" onClick={e => this.handleOnChangename(e)}><span className="glyphicon glyphicon-search" /></button>
             </span>
           </div>
           <br/>
           { this.state.loading ? <Spinner /> : (<div>
             <ul className="list-group">
-              <FollowList users={following}/>
-              <FollowList users={followers}/>
-              <FollowList users={watchedPeople}/>
+              {
+                users.map( (user, index) =>  <li className="list-group-item" key={index}><Link to={`/poll/${user.name}`}>{user.name}</Link></li> )
+              }
            </ul>
+           <h4>{ noResults }</h4>
           </div>)}
         </div>
       </div>
@@ -71,15 +52,11 @@ export default class People extends Component {
 }
 
 People.propTypes = {
-  followers: PropTypes.object,
-  following: PropTypes.object,
-  searchPeople: PropTypes.func,
-  watchedPeople: PropTypes.array,
-  registerListeners: PropTypes.func,
-  unregisterListeners: PropTypes.func,
-  auth: PropTypes.object
+  users: PropTypes.array,
+  peopleSearch: PropTypes.func.isRequired,
+  clearPeopleSearch: PropTypes.func.isRequired
 };
 
 People.defaultProps = {
-  watchedPeople: []
+  users: []
 };

@@ -1,15 +1,14 @@
 import { connect } from 'react-redux';
 
 import People from '../components/People';
-import * as peopleActions from '../actions/people';
+import * as peopleSearchActions from '../actions/people';
 
 function mapStateToProps(state) {
-  const { user, followers, following, auth, watchedPeople } = state;
   return {
-    user, followers, following, auth, watchedPeople
+    users: state.people
   };
 }
 
 export default connect(
-  mapStateToProps, peopleActions
+  mapStateToProps, peopleSearchActions
 )(People);
