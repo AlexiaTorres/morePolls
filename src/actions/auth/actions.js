@@ -29,10 +29,10 @@ export function createUser(user, password){
       if (snap.exists()){
         dispatch({
           type: USER_EXISTS,
-          payload: "This user already exists",
+          payload: "This user already exists"
       });
       } else {
-        ref.set({ user, password});
+        ref.set({ user, password, visibily: true});
         dispatch(logIn(user, password));
        }
      });

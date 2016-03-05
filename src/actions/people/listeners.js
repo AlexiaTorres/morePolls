@@ -1,5 +1,4 @@
 import { SET_WATCHED_POLLS } from './action-types';
-import { pushState } from 'redux-router';
 
 export function registerListeners(userId) {
   return (dispatch, getState) => {
@@ -17,7 +16,6 @@ export function registerListeners(userId) {
         });
       debugger;
       });
-			dispatch(pushState(null, '/watchedPolls'));
     });
 
   };

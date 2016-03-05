@@ -6,7 +6,8 @@ export function registerListeners() {
     firebase.child(`users/${auth.id}`).on('value', snapshot => {
       dispatch({
         type: SET_SETTINGS,
-        settings: snapshot.val()
+        settings: snapshot.val(),
+        hide: snapshot.val()
       });
     });
   };

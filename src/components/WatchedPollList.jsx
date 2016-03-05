@@ -12,6 +12,19 @@ export default class WatchedPollList extends Component {
     };
   }
 
+  componentWillMount() {
+    this.props.registerListeners();
+  }
+
+  componentWillReceiveProps() {
+    this.setState({ loading: false });
+  }
+
+  componentWillUnmount() {
+    this.props.unregisterListeners();
+  }
+
+
   componentWillReceiveProps() {
     this.setState({ loading: false });
   }
@@ -20,31 +33,32 @@ export default class WatchedPollList extends Component {
 
     const { watchedPolls } = this.props;
 debugger;
-    const contents = this.state.loading ?
-      <Spinner /> :
-      (
-        <ul className="list-group">
-            {
-              watchedPolls.map( (poll, index) =>
-								<li key={index}>
-									<Link to={`/poll/${poll.id}`} style={{color: 'inherit', textDecoration: 'inherit'}}>
-										{poll.title}
-										{
-											poll.id === '-K4mB9gnUjzxp2mxShwk' || poll.id === '-K4mB6io8er7LNHtRRLZ' ? null
+
+    return (
+      <div className="row">
+        <div className="col-md-6">
+          {
+            this.state.loading ?
+              <Spinner /> :
+            (
+              <ul className="list-group">
+                {
+                 watchedPolls.map( (poll, index) =>
+                  <li key={index}>
+                  <Link to={`/poll/${poll.id}`} style={{color: 'inherit', textDecoration: 'inherit'}}>
+                    {poll.title}
+                    {
+                      poll.id === '-K4mB9gnUjzxp2mxShwk' || poll.id === '-K4mB6io8er7LNHtRRLZ' ? null
                       :
                       <span style={{marginLeft: '1em'}}>{formatDate(poll.createdAt)}</span>
                     }
                   </Link>
                 </li>
-              )
-            }
-         </ul>
-      );
-
-    return (
-      <div className="row">
-        <div className="col-md-6">
-          { contents }
+                )
+                 }
+              </ul>
+            )
+           }
         </div>
       </div>
     );
@@ -52,7 +66,9 @@ debugger;
 }
 
 WatchedPollList.propTypes = {
-  watchedPolls: PropTypes.array
+  watchedPolls: PropTypes.array,
+  registerListeners: PropTypes.func,
+  unregisterListeners: PropTypes.func
 };
 
 WatchedPollList.defaultProps = {

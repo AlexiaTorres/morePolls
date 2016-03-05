@@ -25,8 +25,9 @@ export default class People extends Component {
   }
 
   handleWatchUser(user){
-    const { registerListeners } = this.props;
+    const { registerListeners, history } = this.props;
     registerListeners(user.id);
+    history.replaceState(null, '/watchedPolls');
   }
 
   render() {
@@ -61,7 +62,7 @@ People.propTypes = {
   clearPeopleSearch: PropTypes.func.isRequired,
   registerListeners: PropTypes.func.isRequired,
   unregisterListeners: PropTypes.func.isRequired,
-  navigate: PropTypes.func
+  history: PropTypes.object
 };
 
 People.defaultProps = {
