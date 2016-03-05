@@ -10,7 +10,7 @@ export function registerListeners(params) {
       dispatch(snapshot.exists() ?
         {
           type: SET_POLL,
-          poll: Object.assign({}, { id: params.idPoll }, newPoll)
+          poll: Object.assign({}, { id: params.idPoll, creator: params.creator }, newPoll)
         } :
         pushState(null, '/')
       );

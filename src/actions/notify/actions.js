@@ -6,7 +6,8 @@ import {
   SET_NOTIFICATION_AS_READED_ERROR,
   REMOVE_NOTIFICATION_ERROR,
   REMOVE_ALL_NOTIFICATIONS_ERROR,
-  SET_NOTIFICATIONS } from './action-types.js';
+  SET_NOTIFICATIONS,
+  VOTE_NOTIFICATION } from './action-types.js';
 
 export function addNotification(text, level = NotifyLevels.INFO) {
   return (dispatch, getState) => {
@@ -25,6 +26,30 @@ export function addNotification(text, level = NotifyLevels.INFO) {
         console.error('ERROR @ addNotification :', error);
         dispatch({
           type: ADD_NOTIFICATION_ERROR,
+          payload: error
+        });
+      }
+    });
+  };
+}
+
+export function voteNotification(text, userId, level = NotifyLevels.INFO) {
+  return (dispatch, getState) => {
+    const { firebase } = getState();
+    const ref = firebase.child(`myNotifications/${userId}`);
+    const notificationId = ref.push().key();
+    ref.update({[notificationId]: {
+      id: notificationId,
+      text,
+      level,
+      created: Firebase.ServerValue.TIMESTAMP,
+      pending: true,
+      isNew: true
+    }}, error => {
+      if (error) {
+        console.error('ERROR @ addNotification :', error);
+        dispatch({
+          type: VOTE_NOTIFICATION,
           payload: error
         });
       }

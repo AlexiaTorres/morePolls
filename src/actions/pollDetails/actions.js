@@ -1,7 +1,7 @@
 import {
   UPDATE_POLL_ERROR
 } from './action-types';
-import { addNotification } from '../notify/actions';
+import { addNotification, voteNotification } from '../notify/actions';
 //import { voteNotification } from '../notify/actions';
 
 export function editPollTitle(idPoll, title) {
@@ -72,7 +72,7 @@ export function removeEntry(idPoll, idEntry, entryTitle) {
   };
 }
 
-export function voteEntry(idPoll, idEntry, /*creator*/) {
+export function voteEntry(idPoll, idEntry, creator) {
   return (dispatch, getState) => {
     const { firebase, auth } = getState();
     const userVotesRef = firebase.child(`userVotes/${auth.id}/${idPoll}`);
@@ -94,8 +94,9 @@ export function voteEntry(idPoll, idEntry, /*creator*/) {
                     type: UPDATE_POLL_ERROR,
                     payload: error,
                   });
-        //voteNotification(`New vote on poll , "${idPoll}", ${creator}` )(dispatch, getState);
-      }
+                } else {
+                  voteNotification(`"New vote on poll: , ${idPoll}", ${creator}` )(dispatch, getState);
+                }
               });
             }
           }
