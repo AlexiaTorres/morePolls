@@ -60,6 +60,7 @@
     "history": "^1.17.x",
     "immutable": "^3.7.5",
     "jquery": "^2.1.4",
+    "lodash": "^4.6.1",
     "node-uuid": "^1.4.3",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",

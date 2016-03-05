@@ -14,7 +14,6 @@ export function registerListeners(userId) {
           type: SET_WATCHED_POLLS,
           watchedPolls
         });
-      debugger;
       });
     });
 

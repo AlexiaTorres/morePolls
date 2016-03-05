@@ -32,7 +32,6 @@ export default class WatchedPollList extends Component {
   render() {
 
     const { watchedPolls } = this.props;
-debugger;
 
     return (
       <div className="row">
