@@ -5,7 +5,7 @@ import {
   POLL_STATES,
   SET_STATE_POLL_ERROR
 } from './action-types';
-
+import { addNotification } from '../notify/actions';
 import { createActionConfirmation } from '../confirm';
 
 export function setPolls(polls) {
@@ -27,7 +27,17 @@ export function addPoll(title) {
       } else {
         const pollId = newPollRef.key();
         const userId = auth.id;
-        firebase.child(`myPolls/${userId}/${pollId}`).set({ state: 'locked', createdAt });
+        firebase.child(`myPolls/${userId}/${pollId}`).set({ state: 'locked', createdAt }).then(error => {
+            if (error) {
+              console.error('ERROR @ addPoll :', error); // eslint-disable-line no-console
+              dispatch({
+                type: ADD_POLL_ERROR,
+                payload: error,
+            });
+          } else {
+            addNotification(`Added new poll, "${title}".`)(dispatch, getState);
+          }
+        });
       }
     });
   };
@@ -47,7 +57,18 @@ export function removePoll(pollId, pollTitle) {
             });
           } else {
             const userId = auth.id;
-            firebase.child(`myPolls/${userId}/${pollId}`).remove();
+            firebase.child(`myPolls/${userId}/${pollId}`).remove()
+            .then(error => {
+                  if (error) {
+                    console.error('ERROR @ addPoll :', error); // eslint-disable-line no-console
+                    dispatch({
+                      type: ADD_POLL_ERROR,
+                      payload: error,
+                  });
+                } else {
+                  addNotification(`Removed poll, "${pollTitle}".`)(dispatch, getState);
+                }
+              });
           }
         });
     }));

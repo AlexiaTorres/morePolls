@@ -41,7 +41,8 @@
           "votes" : 6
         }
       },
-      "title" : "Spanish Political Parties"
+      "title" : "Spanish Political Parties",
+      "creator": "homer"
     },
     "-K4mB9gnUjzxp2mxShwk" : {
       "state": "locked",
@@ -75,7 +76,8 @@
           "votes" : 0
         }
       },
-      "title" : "Programming Languages"
+      "title" : "Programming Languages",
+      "creator": "homer"
     }
   }
 }

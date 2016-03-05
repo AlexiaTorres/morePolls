@@ -1,13 +1,13 @@
 import { SET_NOTIFICATIONS } from '../actions/notify';
 
-function setNotifications(state, notifications) {
- return notifications.slice();
+function setNotifications(notifications) {
+  return [].concat(Object.values(notifications));
 }
 
 export default function notifyReducer(state = [], action) {
   switch (action.type) {
     case SET_NOTIFICATIONS:
-      return setNotifications(state, action.notifications);
+      return setNotifications(action.notifications);
     default:
       return state;
   }

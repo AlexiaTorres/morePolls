@@ -29,8 +29,8 @@ export default class PollVote extends Component {
     this.props.unregisterListeners(this.props.params);
   }
 
-  handleVoteClick(idPoll, idEntry) {
-    this.props.voteEntry(idPoll, idEntry);
+  handleVoteClick(idPoll, idEntry, creator) {
+    this.props.voteEntry(idPoll, idEntry, creator);
     this.setState({ unvote: true});
   }
 
@@ -70,7 +70,7 @@ export default class PollVote extends Component {
                   Object.keys(entries).sort((idX, idY) => entries[idY].votes - entries[idX].votes).map( (id, index) =>
                     <li className="list-group-item" key={index}>
                       { entries[id].title }
-                      { auth.authenticated && poll.state === 'unlocked' ? <span onClick={ () => this.handleVoteClick(poll.id, id) } className="action-element glyphicon glyphicon-arrow-up"/> : null }
+                      { auth.authenticated && poll.state === 'unlocked' ? <span onClick={ () => this.handleVoteClick(poll.id, id, poll.creator) } className="action-element glyphicon glyphicon-arrow-up"/> : null }
                       {
                        auth.authenticated && this.state.unvote ?
                         <button className="btn btn-danger" type="button" onClick={ () => this.handleUnVoteClick(poll.id, id) }>Change vote</button>

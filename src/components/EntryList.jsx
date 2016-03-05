@@ -11,7 +11,7 @@ export default class EntryList extends Component {
     const { poll, addEntry } = this.props;
     const node = this.refs.title;
     const title =  node.value.trim();
-    addEntry(poll.id, title);
+    addEntry(poll.id, title, poll.title);
     node.value = '';
   }
 

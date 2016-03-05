@@ -1,6 +1,8 @@
 import {
   UPDATE_POLL_ERROR
 } from './action-types';
+import { addNotification } from '../notify/actions';
+//import { voteNotification } from '../notify/actions';
 
 export function editPollTitle(idPoll, title) {
   return (dispatch, getState) => {
@@ -18,7 +20,7 @@ export function editPollTitle(idPoll, title) {
   };
 }
 
-export function addEntry(idPoll, title) {
+export function addEntry(idPoll, title, pollTitle) {
   return (dispatch, getState) => {
     const { firebase } = getState();
     firebase.child(`polls/${idPoll}/entries`)
@@ -28,7 +30,9 @@ export function addEntry(idPoll, title) {
             type: UPDATE_POLL_ERROR,
             payload: error,
         });
-      }
+        } else {
+          addNotification(`Added new entry, "${title}", to the poll "${pollTitle}"`)(dispatch, getState);
+        }
     });
   };
 }
@@ -50,7 +54,7 @@ export function editEntryTitle(idPoll, idEntry, title) {
 }
 
 
-export function removeEntry(idPoll, idEntry) {
+export function removeEntry(idPoll, idEntry, entryTitle) {
   return (dispatch, getState) => {
     const { firebase } = getState();
     firebase.child(`polls/${idPoll}/entries/${idEntry}`)
@@ -61,12 +65,14 @@ export function removeEntry(idPoll, idEntry) {
             type: UPDATE_POLL_ERROR,
             payload: error,
         });
+         } else {
+        addNotification(`Entry removed: "${entryTitle}"`)(dispatch, getState);
       }
     });
   };
 }
 
-export function voteEntry(idPoll, idEntry) {
+export function voteEntry(idPoll, idEntry, /*creator*/) {
   return (dispatch, getState) => {
     const { firebase, auth } = getState();
     const userVotesRef = firebase.child(`userVotes/${auth.id}/${idPoll}`);
@@ -88,13 +94,15 @@ export function voteEntry(idPoll, idEntry) {
                     type: UPDATE_POLL_ERROR,
                     payload: error,
                   });
-                }
+        //voteNotification(`New vote on poll , "${idPoll}", ${creator}` )(dispatch, getState);
+      }
               });
             }
           }
         );
       }
     });
+
   };
 }
 

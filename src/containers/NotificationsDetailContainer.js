@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
-import * as notificationsActions from '../actions/notify';
+import * as notifyActions from '../actions/notify';
+
 import NotificationsDetail from '../components/NotificationsDetail';
 
 export default connect(
-	state => ({messages: state.messages}),
-	notificationsActions
+	state => ({messages: state.messages, auth: state.auth}),
+	notifyActions
 )(NotificationsDetail);

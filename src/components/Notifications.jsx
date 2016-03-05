@@ -11,8 +11,8 @@ export default class Notifications extends Component {
     this.props.registerListeners();
   }
 
-  componentWillReceiveProps(){
-    this.props.registerListeners();
+  componentWillUnmount() {
+    this.props.unregisterListeners();
   }
 
   render() {
@@ -33,7 +33,8 @@ Notifications.propTypes = {
   total: PropTypes.number,
   pending: PropTypes.number,
   active: PropTypes.string.isRequired,
-  registerListeners: PropTypes.func.isRequired
+  registerListeners: PropTypes.func,
+  unregisterListeners: PropTypes.func
 };
 
 Notifications.defaultProps = {
