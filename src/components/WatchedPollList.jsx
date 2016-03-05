@@ -47,9 +47,7 @@ export default class WatchedPollList extends Component {
                   <Link to={`/poll/${poll.id}`} style={{color: 'inherit', textDecoration: 'inherit'}}>
                     {poll.title}
                     {
-                      poll.id === '-K4mB9gnUjzxp2mxShwk' || poll.id === '-K4mB6io8er7LNHtRRLZ' ? null
-                      :
-                      <span style={{marginLeft: '1em'}}>{formatDate(poll.createdAt)}</span>
+                      poll.createdAt && <span style={{marginLeft: '1em'}}>{formatDate(poll.createdAt)}</span>
                     }
                   </Link>
                 </li>
