@@ -13,8 +13,12 @@ import settings from './settings';
 import loginAlert from './loginAlert';
 import registerAlert from './registerAlert';
 import people from './people';
+import votedStatus from './votedStatus';
+import votedEntry from './votedEntry';
 
 const pollApp = combineReducers({
+  votedEntry,
+  votedStatus,
   watchedPolls,
   people,
   auth,

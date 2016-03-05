@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Spinner from './Spinner';
+import { throttle } from 'lodash';
 
 const progressContex = [
   'progress-bar-success',
@@ -34,8 +35,12 @@ export default class PollVote extends Component {
     this.setState({ unvote: true});
   }
 
-  handleUnVoteClick(idPoll, idEntry) {
+  handleUnvoteClick(idPoll, idEntry) {
     this.props.unvoteEntry(idPoll, idEntry);
+  }
+
+  handleChangeVoteClick(idPoll, newIdEntry, oldIdEntry) {
+    this.props.changeVote(idPoll, newIdEntry, oldIdEntry);
   }
 
   totalVotes(entries) {
@@ -53,7 +58,8 @@ export default class PollVote extends Component {
   }
 
   render() {
-    const { poll, auth } = this.props;    const entries = poll.entries || {};
+    const { poll, auth, hasVoted, votedEntry } = this.props;
+    const entries = poll.entries || {};
     const total = this.totalVotes(entries);
     const contents = this.state.loading ? <Spinner /> : <div>
         <div className="panel-heading">
@@ -70,12 +76,9 @@ export default class PollVote extends Component {
                   Object.keys(entries).sort((idX, idY) => entries[idY].votes - entries[idX].votes).map( (id, index) =>
                     <li className="list-group-item" key={index}>
                       { entries[id].title }
-                      { auth.authenticated && poll.state === 'unlocked' ? <span onClick={ () => this.handleVoteClick(poll.id, id, poll.creator) } className="action-element glyphicon glyphicon-arrow-up"/> : null }
-                      {
-                       auth.authenticated && this.state.unvote ?
-                        <button className="btn btn-danger" type="button" onClick={ () => this.handleUnVoteClick(poll.id, id) }>Change vote</button>
-                        : null
-                      }
+                      { (auth.authenticated && !hasVoted && poll.state === 'unlocked') ? <span onClick={throttle(() => this.handleVoteClick(poll.id, id, poll.creator), 10000) } className="action-element glyphicon glyphicon-arrow-up"/> : null }
+                      { hasVoted && ( votedEntry === id ) ? <span onClick={ throttle(() => this.handleUnvoteClick(poll.id, id), 10000) } className="action-element glyphicon glyphicon-arrow-down"/> : null }
+                      { hasVoted && ( votedEntry !== id ) ? <button className="btn btn-danger" type="button" onClick={ throttle(() => this.handleChangeVoteClick(poll.id, id, votedEntry), 10000) }>Change vote</button> : null }
                       <br/>
                       { this.createProgressBar(entries[id], total, index) }
                     </li>
@@ -99,5 +102,12 @@ PollVote.propTypes = {
   unvoteEntry: PropTypes.func.isRequired,
   params: PropTypes.object.isRequired,
   registerListeners: PropTypes.func.isRequired,
-  unregisterListeners: PropTypes.func.isRequired
+  unregisterListeners: PropTypes.func.isRequired,
+  hasVoted: PropTypes.bool.isRequired,
+  changeVote: PropTypes.func.isRequired,
+  votedEntry: PropTypes.string.isRequired
  };
+
+PollVote.defaultProps = {
+  hasVoted: true
+};
