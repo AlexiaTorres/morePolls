@@ -15,6 +15,7 @@ export default class People extends Component {
 
   componentWillUnmount() {
     this.props.clearPeopleSearch();
+    this.setState({ loading: false });
   }
 
   handleOnChangename() {
@@ -32,6 +33,7 @@ export default class People extends Component {
 
   render() {
     const { users } = this.props;
+    const { loading } = this.state;
     const noResults = users.length === 0 ? 'No results' : null;
     return ( <div className="row">
         <div className="col-md-6">
@@ -42,10 +44,18 @@ export default class People extends Component {
             </span>
           </div>
           <br/>
-          { this.state.loading ? <Spinner /> : (<div>
+          { loading ? <Spinner /> : (<div>
             <ul className="list-group">
               {
-                users.map( (user, index) =>  <li className="list-group-item" key={index} onClick={() => this.handleWatchUser(user)}> {user.name}</li> )
+                users.map( (user, index) =>
+                  <li className="list-group-item" key={index}>
+                  {user.visibility ?
+                  <span onClick={() => this.handleWatchUser(user)}><img src={user.picture} /> {user.name} </span>
+                  :
+                  <span> Private profile </span>
+                  }
+                  </li>
+                )
               }
            </ul>
            <h4>{ noResults }</h4>

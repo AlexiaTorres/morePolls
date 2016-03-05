@@ -44,7 +44,7 @@ export default class WatchedPollList extends Component {
                 {
                  watchedPolls.map( (poll, index) =>
                   <li key={index}>
-                  <Link to={`/poll/${poll.id}`} style={{color: 'inherit', textDecoration: 'inherit'}}>
+                  <Link to={`/vote/${poll.id}`} style={{color: 'inherit', textDecoration: 'inherit'}}>
                     {poll.title}
                     {
                       poll.createdAt && <span style={{marginLeft: '1em'}}>{formatDate(poll.createdAt)}</span>

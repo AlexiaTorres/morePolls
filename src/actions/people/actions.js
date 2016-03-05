@@ -16,7 +16,7 @@ export function peopleSearch(startAt) {
    const ref = firebase.child('users');
    ref.orderByChild('name').startAt(startAt).endAt(`${startAt}\uf8ff`).once('value', snapshot => dispatch({
      type: SET_PEOPLE_SEARCH,
-     users: Object.keys(snapshot.val() || []).map( id => ({id, name:snapshot.val()[id].name}))
+     users: Object.keys(snapshot.val() || []).map( id => ({id, name:snapshot.val()[id].name, picture:snapshot.val()[id].picture, visibility: snapshot.val()[id].visibility}))
    }));
   };
 }
