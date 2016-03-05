@@ -8,11 +8,21 @@ export default class Notifications extends Component {
   }
 
   componentWillMount() {
-    this.props.registerListeners();
+    const { auth, registerListeners } = this.props;
+    registerListeners(auth.id);
+  }
+
+  componentWillReceiveProps(newProps) {
+    const { auth, registerListeners, unregisterListeners } = this.props;
+    if (newProps.auth.id !== auth.id) {
+      unregisterListeners(auth.id);
+      newProps.auth.id && registerListeners(newProps.auth.id);
+    }
   }
 
   componentWillUnmount() {
-    this.props.unregisterListeners();
+    const { auth, unregisterListeners } = this.props;
+    unregisterListeners(auth.id);
   }
 
   render() {
@@ -32,6 +42,7 @@ export default class Notifications extends Component {
 Notifications.propTypes = {
   total: PropTypes.number,
   pending: PropTypes.number,
+  auth: PropTypes.object,
   active: PropTypes.string.isRequired,
   registerListeners: PropTypes.func,
   unregisterListeners: PropTypes.func
