@@ -17,7 +17,7 @@ export function addPoll(title) {
     const { firebase, auth } = getState();
     const createdAt = Date.now();
     const newPollRef = firebase.child('polls')
-      .push({ title, createdAt, creator: userId }, error => {
+      .push({ title, createdAt, creator: auth.id }, error => {
         if (error) {
           console.error('ERROR @ addPoll :', error); // eslint-disable-line no-console
           dispatch({
