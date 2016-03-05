@@ -2,11 +2,13 @@
   "users": {
     "homer": {
       "name": "Homer Simpson",
-      "picture": "/img/homer.png"
+      "picture": "/img/homer.png",
+      "visibility": true
     },
     "bart": {
       "name": "Bart Simpson",
-      "picture": "/img/bart.png"
+      "picture": "/img/bart.png",
+      "visibility": true
      },
      "lisa": {
       "name": "Lisa Simpson"

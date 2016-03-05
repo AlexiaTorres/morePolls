@@ -12,7 +12,8 @@ export default class Settings extends Component {
     const picture =  settings && settings.picture;
     const user = settings && settings.user;
     const password = settings && settings.password;
-    this.state = { name, picture, user, password, editing: false };
+    const visibility = settings && settings.visibility;
+    this.state = { name, picture, user, password, visibility, editing: false };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -21,14 +22,16 @@ export default class Settings extends Component {
     const picture =  settings && settings.picture;
     const user = settings && settings.user;
     const password = settings && settings.password;
-    this.setState({ name: name || user, picture: picture, password: password});
+    const visibility = settings && settings.visibility;
+    this.setState({ name: name || user, picture: picture, password: password, visibility: visibility});
   }
 
   saveSettingsClick() {
     const { name, picture, user, password } = this.refs;
     const settings = {
       name: name.value || user.value,
-      password: password.value
+      password: password.value,
+      visibility: this.state.visibility
     };
 
     if (picture.value) {
@@ -52,10 +55,25 @@ export default class Settings extends Component {
     });
   }
 
+  handleVisibilityOff(){
+    this.setState({
+      editing: true,
+      visibility: false
+    });
+  }
+
+  handleVisibilityOn(){
+    this.setState({
+      editing: true,
+      visibility: true
+    });
+  }
+
   render() {
     const name = this.state.name || this.state.user;
     const picture = this.state.picture;
     const password = this.state.password;
+    const visibility = this.state.visibility;
     const editing = this.state.editing;
     const { saving } = this.props;
 
@@ -78,6 +96,14 @@ export default class Settings extends Component {
             <div className="input-group">
               <span className="input-group-addon">Password</span>
                 <input disabled={ saving } type="password" className="form-control" ref="password" value={ password } onChange={(e) => this.onChange(e)}/>
+            </div>
+            <br/>
+            <div className="input-group">
+              <span className="input-group-addon">Visibility</span>
+                {
+                  visibility ? <input disabled={ saving } type="button" className="form-control" value={ visibility } onClick={(e) => this.handleVisibilityOff(e)}/>
+                  : <input disabled={ saving } type="button" className="form-control" value={ visibility } onClick={(e) => this.handleVisibilityOn(e)}/>
+                }
             </div>
           </div>
           <div className="panel-footer">
