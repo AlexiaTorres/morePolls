@@ -56,7 +56,6 @@ export default class People extends Component {
 }
 
 People.propTypes = {
-  watchedPolls: PropTypes.array,
   users: PropTypes.array,
   peopleSearch: PropTypes.func.isRequired,
   clearPeopleSearch: PropTypes.func.isRequired,

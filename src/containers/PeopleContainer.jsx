@@ -5,7 +5,7 @@ import * as peopleSearchActions from '../actions/people';
 
 function mapStateToProps(state) {
   return {
-    users: state.people, watchedPolls: state.watchedPolls
+    users: state.people
   };
 }
 
